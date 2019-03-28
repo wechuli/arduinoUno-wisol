@@ -20,7 +20,7 @@ SoftwareSerial Sigfox =  SoftwareSerial(rxPin, txPin);
 #define DEBUG 1
 
 //Message buffer
-uint16_t msg[12];
+uint8_t msg[12];
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -44,13 +44,11 @@ void setup() {
 
 // the loop function runs over and over again forever
 void loop() {
+  msg[0]=0xC0;
+  msg[1]=0xFF;
+  msg[2]=0xEE;
 
-    uint16_t humidity = 49.69 * 100;
-
-    msg[0] = highByte(humidity);
-    msg[1] = lowByte(humidity);
-
-    sendMessage(msg, 2);
+  sendMessage(msg, 3);
 
   // In the ETSI zone, due to the reglementation, an object cannot emit more than 1% of the time hourly
   // So, 1 hour = 3600 sec
@@ -118,7 +116,7 @@ String getPAC(){
 
 
 //Send Sigfox Message
-void sendMessage(uint16_t msg[], int size){
+void sendMessage(uint8_t msg[], int size){
 
   String status = "";
   char output;
