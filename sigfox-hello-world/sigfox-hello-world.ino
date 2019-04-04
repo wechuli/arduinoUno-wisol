@@ -45,7 +45,7 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
 
-    uint16_t humidity = 49.69 * 100;
+    uint16_t humidity = 491.69 * 100;
 
     msg[0] = highByte(humidity);
     msg[1] = lowByte(humidity);
