@@ -1,9 +1,10 @@
 #include <SoftwareSerial.h>
+#include "LowPower.h"
 
-#define ECHOPIN 2 // Pin to receive echo pulse
-#define TRIGPIN 3 // Pin to send trigger pulse
-#define rxPin 10
-#define txPin 11
+#define ECHOPIN 11 // Pin to receive echo pulse
+#define TRIGPIN 12 // Pin to send trigger pulse
+#define rxPin 8
+#define txPin 7
 
 // set up a new serial port
 SoftwareSerial Sigfox = SoftwareSerial(rxPin, txPin);
@@ -19,6 +20,7 @@ uint16_t msg[12];
 void setup()
 {
     // initialize digital pin LED_BUILTIN as an output.
+
     pinMode(LED_BUILTIN, OUTPUT);
 
     if (DEBUG)
@@ -51,23 +53,27 @@ void loop()
     digitalWrite(TRIGPIN, LOW);                   // Send pin low again
     int distance = pulseIn(ECHOPIN, HIGH, 26000); // Read in times pulse
     distance = distance / 58;
-    Serial.println(distance);       
-    
-    uint16_t distbyte = (distance+100) *100;
+    Serial.println(distance);
+
+    uint16_t distbyte = (distance + 100) * 100;
     Serial.println(distbyte);
 
     msg[0] = highByte(distbyte);
     msg[1] = lowByte(distbyte);
-   
 
-    sendMessage(msg,2);
+    sendMessage(msg, 2);
 
     // In the ETSI zone, due to the reglementation, an object cannot emit more than 1% of the time hourly
     // So, 1 hour = 3600 sec
     // 1% of 3600 sec = 36 sec
     // A Sigfox message takes 6 seconds to emit
     // 36 sec / 6 sec = 6 messages per hours -> 1 every 10 minutes
-    delay(3600000);
+    // delay(3600000);
+
+    for (int i = 0; i < 400; i++)
+    {
+        LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+    }
 }
 
 void blink()
