@@ -46,6 +46,8 @@ void setup()
 void loop()
 {
 
+    digitalWrite(LED_BUILTIN, HIGH);
+
     digitalWrite(TRIGPIN, LOW); // Set the trigger pin to low for 2uS
     delayMicroseconds(2);
     digitalWrite(TRIGPIN, HIGH); // Send a 10uS high to trigger ranging
@@ -70,7 +72,8 @@ void loop()
     // 36 sec / 6 sec = 6 messages per hours -> 1 every 10 minutes
     // delay(3600000);
 
-    for (int i = 0; i < 400; i++)
+    digitalWrite(LED_BUILTIN, LOW);
+    for (int i = 0; i < 50; i++)
     {
         LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
     }
