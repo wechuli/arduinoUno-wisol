@@ -78,7 +78,7 @@ void loop()
 
     digitalWrite(sensor_pin, LOW);
     digitalWrite(LED_BUILTIN, LOW);
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 3300; i++)
     {
         LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
     }
