@@ -11,7 +11,7 @@
 SoftwareSerial Sigfox = SoftwareSerial(rxPin, txPin);
 
 //Set to 0 if you don't need to see the messages in the console
-#define DEBUG 0
+#define DEBUG 1
 
 //Message buffer
 uint16_t msg[12];
