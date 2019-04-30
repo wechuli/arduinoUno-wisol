@@ -11,7 +11,7 @@
 SoftwareSerial Sigfox = SoftwareSerial(rxPin, txPin);
 
 //Set to 0 if you don't need to see the messages in the console
-#define DEBUG 1
+#define DEBUG 0
 
 //Message buffer
 uint16_t msg[12];
@@ -78,7 +78,7 @@ void loop()
 
     digitalWrite(sensor_pin, LOW);
     digitalWrite(LED_BUILTIN, LOW);
-    for (int i = 0; i < 3300; i++)
+    for (int i = 0; i < 2; i++)
     {
         LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
     }
@@ -95,13 +95,15 @@ void blink()
 //Get Sigfox ID
 String getID()
 {
+here:
     String id = "";
     char output;
 
     Sigfox.print("AT$I=10\r");
     while (!Sigfox.available())
     {
-        blink();
+        // blink();
+        goto here;
     }
 
     while (Sigfox.available())
@@ -123,13 +125,15 @@ String getID()
 //Get PAC number
 String getPAC()
 {
+here2:
     String pac = "";
     char output;
 
     Sigfox.print("AT$I=11\r");
     while (!Sigfox.available())
     {
-        blink();
+        // blink();
+        goto here2;
     }
 
     while (Sigfox.available())
@@ -166,11 +170,13 @@ void sendMessage(uint16_t msg[], int size)
         }
     }
 
+here3:
     Sigfox.print("\r");
 
     while (!Sigfox.available())
     {
-        blink();
+        // blink();
+        goto here3;
     }
     while (Sigfox.available())
     {
